@@ -50,7 +50,9 @@
     align-items: center;
   }
 
-  
+  .flex {
+    display: flex
+  }
   
   #input-selector {
     width: 50%;
@@ -85,6 +87,17 @@
   .small {
     width: 200px !important;
     height: auto !important;
+}
+
+.image-div {
+  width: 35%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 200px
+}
+.flex > li {
+  width: 65%
 }
 
 

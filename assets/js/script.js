@@ -1,4 +1,3 @@
-renderButtons();
 
 $("button").on("click", function (event) {
   var city = $("#input-selector").val();
@@ -6,17 +5,21 @@ $("button").on("click", function (event) {
   addToStorage(city);
   renderButtons();
   localStorage.setItem("city", city);
+  searchGeoCode(city)
+});
+function searchGeoCode(city){
+  
   var geocodeUrl =
     "https://maps.googleapis.com/maps/api/geocode/json?address=" +
     city +
     "&key=" +
     myKey;
-
+  
   $.ajax({
     url: geocodeUrl,
     method: "GET",
   }).then(queryCoffeesFromGeocodeResponse);
-});
+}
 
 // Local storage
 // function that adds new value to array in local storage
@@ -44,8 +47,9 @@ function renderButtons() {
     var newCity = $("<button>");
     newCity.text(searchedCities[i]);
     $("#history-list").append(newCity);
-    newCity.click(function () {
-      queryCoffeesFromGeocodeResponse(this.innerHTML);
+    newCity.on("click", function () {
+      console.log("cliked")
+      searchGeoCode(this.innerHTML);
     });
   }
 }
@@ -85,7 +89,7 @@ function queryCoffeesFromGeocodeResponse(response) {
     // loop through the results in the response data
     for (var i = 0; i < coffeePlace.length; i++) {
       var $coffeeList = $("<ul>");
-      $coffeeList.addClass("list-group");
+      $coffeeList.addClass(" list-group-item flex");
 
       $("#cafe-section").append($coffeeList);
 
@@ -109,7 +113,13 @@ function queryCoffeesFromGeocodeResponse(response) {
       $articleListItem.append("<h4>Rating: " + rating + "</h4>");
       $articleListItem.append("<h4>Address: " + address + "</h4>");
       $articleListItem.append("<h4>Opening hours: " + message + "</h4>");
-
+      var imageDiv = $("<div>")
+      imageDiv.addClass("image-div")
+      var imageEl = $("<img>")
+      imageEl.attr("src", "./cafe-g05c344315_1920.jpg")
+      imageEl.addClass("small")
+      imageDiv.append(imageEl)
+      $coffeeList.append(imageDiv)
       $coffeeList.append($articleListItem);
     }
   });
@@ -126,3 +136,4 @@ $("#clearHistory").on("click", function () {
   $("#history-list").empty();
   localStorage.clear();
 });
+    renderButtons();
